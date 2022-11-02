@@ -30,6 +30,15 @@
 - если докер образ не запускается и падает с ошибкой 137 в этом случае может помочь настройка `-e ES_HEAP_SIZE`
 - при настройке `path` возможно потребуется настройка прав доступа на директорию
 
+
+![image](https://user-images.githubusercontent.com/106814458/199550141-277c69a8-be91-4328-8fa1-a46fd70c1a64.png)
+
+https://hub.docker.com/r/fe1br0/cenelk/tags
+
+![image](https://user-images.githubusercontent.com/106814458/199550694-4335b9c3-d23b-4904-ae35-56619e36a690.png)
+
+
+
 Далее мы будем работать с данным экземпляром elasticsearch.
 
 ## Задача 2
@@ -61,6 +70,18 @@
 При проектировании кластера elasticsearch нужно корректно рассчитывать количество реплик и шард,
 иначе возможна потеря данных индексов, вплоть до полной, при деградации системы.
 
+![image](https://user-images.githubusercontent.com/106814458/199552761-c7707811-eea0-47ad-93c5-7c368ebd72dd.png)
+![image](https://user-images.githubusercontent.com/106814458/199553054-3be97b05-17aa-467a-843c-835f62f02ba8.png)
+
+```
+Кластер находится в состоянии yellow , т.к. половина индексов в таком же статусе , сами индексы имеют такой статус по причине
+того , что есть риск потери данных из-за непредвиденных обстоятельств ,т.к. у них указано количество реплик а реплицироваться 
+некуда т.к. все развернуто на одной машине.
+```
+
+![image](https://user-images.githubusercontent.com/106814458/199555379-41651ac2-3504-4c61-ae85-9e909981442a.png)
+
+
 ## Задача 3
 
 В данном задании вы научитесь:
@@ -91,7 +112,32 @@
 Подсказки:
 - возможно вам понадобится доработать `elasticsearch.yml` в части директивы `path.repo` и перезапустить `elasticsearch`
 
----
+![image](https://user-images.githubusercontent.com/106814458/199571917-62d9adf3-c1ed-4051-bfe3-38317af77c13.png)
+
+```
+root@UbuntaTEST ~/D/E/centos# curl -X PUT "localhost:9200/test?pretty" -H 'Content-Type: application/json' -d'
+                              {
+                                "settings": {
+                                  "index": {
+                                    "number_of_shards": 1,  
+                                    "number_of_replicas": 0 
+                                  }
+                                }
+                              }
+                              '
+{
+  "acknowledged" : true,
+  "shards_acknowledged" : true,
+  "index" : "test"
+}
+
+```
+![image](https://user-images.githubusercontent.com/106814458/199572310-8d4e20a0-26ef-4a15-bee4-a87464e5f444.png)
+
+![image](https://user-images.githubusercontent.com/106814458/199572522-bb505318-22c7-47a7-83bf-a5424d0bd208.png)
+![image](https://user-images.githubusercontent.com/106814458/199572966-3b664260-dac6-42ee-b217-ba7dfb9b8578.png)
+![image](https://user-images.githubusercontent.com/106814458/199575813-aa2938ce-c860-4c23-bbae-051a13ea5cdc.png)
+
 
 ### Как cдавать задание
 
